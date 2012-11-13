@@ -11,7 +11,7 @@
  */
 
 ###	SETTINGS: MUST ###
-set_time_limit(0);				/** Set timeout 								**/
+set_time_limit(0);				      /** Set timeout 								**/
 include_once("http.class.php");	/** Include http.class | @license on the file 	**/
 
 
@@ -32,7 +32,7 @@ class blipPHP {
    */
   function __construct($username="", $password="") {
     if(($username==null) or (empty($username)) or ($password==null) or (empty($password)))
-    		throw new Exception("AUTHENTICATION_REQUIRED: Bad login information.");
+      throw new Exception("AUTHENTICATION_REQUIRED: Bad login information.");
      
     $this->username = $username;
     $this->password	= $password;
@@ -59,24 +59,24 @@ class blipPHP {
 
     //Blip.tv fields
     $data = array(
-        'cmd'			=> "post",
-        'section'		=> "file",
+        'cmd'			    => "post",
+        'section'		  => "file",
         'item_type'		=> "file",
-        'post'			=> "1",
-        'skin'			=> "api",
+        'post'			  => "1",
+        'skin'			  => "api",
         'userlogin'		=> $this->username,
         'password'		=> $this->password,
-        'title'			=> $title,
+        'title'			  => $title,
         'description'	=> $description
     );
 
 
     //Setting http class settings
     $http=new http_class;
-    $http->timeout		= 0;
+    $http->timeout		  = 0;
     $http->data_timeout	= 0;
-    $arguments			= array();
-    $response			= "";
+    $arguments			    = array();
+    $response			      = "";
 
     $http->GetRequestArguments(self::gateway . '?' . http_build_query($data), $arguments);
 
@@ -123,31 +123,31 @@ class blipPHP {
 
     //Blip.tv fields
     $data = array(
-        'cmd'			=> "post",
-        'section'		=> "file",
+        'cmd'			    => "post",
+        'section'		  => "file",
         'item_type'		=> "file",
-        'post'			=> "1",
-        'skin'			=> "api",
+        'post'			  => "1",
+        'skin'			  => "api",
         'userlogin'		=> $this->username,
         'password'		=> $this->password,
-        'id'			=> $id,
-        'title'			=> $title,
+        'id'			    => $id,
+        'title'			  => $title,
     );
     if(!empty($description)) $data['description'] = $description;
 
 
     //Setting http class settings
     $http=new http_class;
-    $http->timeout		= 0;
-    $http->data_timeout	= 0;
-    $arguments			= array();
-    $response			= "";
+    $http->timeout		    = 0;
+    $http->data_timeout	  = 0;
+    $arguments			      = array();
+    $response			        = "";
 
     $http->GetRequestArguments(self::gateway . '?' . http_build_query($data),$arguments);
 
     $arguments["RequestMethod"]	= "POST";
-    $arguments["PostValues"]	= $data;
-    $arguments["User-Agent"]	= "blipPHP (http://code.google.com/p/blip-php/)";
+    $arguments["PostValues"]	  = $data;
+    $arguments["User-Agent"]	  = "blipPHP (http://code.google.com/p/blip-php/)";
 
     //Make the request
     $http->Open($arguments);
@@ -180,13 +180,13 @@ class blipPHP {
 
     //Blip.tv fields
     $data = array(
-        'cmd'			=> "delete",
+        'cmd'			  => "delete",
         'section'		=> "posts",
-        'item_type'		=> "file",
+        'item_type'	=> "file",
         'post'			=> "1",
         'skin'			=> "api",
-        'userlogin'		=> $this->username,
-        'password'		=> $this->password,
+        'userlogin'	=> $this->username,
+        'password'	=> $this->password,
         'item_id'		=> $id,
         'reason'		=> $reason
     );
@@ -194,16 +194,16 @@ class blipPHP {
 
     //Setting http class settings
     $http=new http_class;
-    $http->timeout		= 0;
+    $http->timeout		  = 0;
     $http->data_timeout	= 0;
-    $arguments			= array();
-    $response			= "";
+    $arguments			    = array();
+    $response			      = "";
 
     $http->GetRequestArguments(self::gateway . '?' . http_build_query($data),$arguments);
 
     $arguments["RequestMethod"]	= "POST";
-    $arguments["User-Agent"]	= "blipPHP (http://code.google.com/p/blip-php/)";
-    $arguments["PostValues"]	= $data;
+    $arguments["User-Agent"]	  = "blipPHP (http://code.google.com/p/blip-php/)";
+    $arguments["PostValues"]	  = $data;
 
     //Make the request
     $http->Open($arguments);
@@ -238,48 +238,34 @@ class blipPHP {
   /**
    * Alias for `upload` method
    */
-  public function add($file=null, $title=null, $description="") {
-    return $this->upload($file,$title,$description);
-  }
+  public function add($file=null, $title=null, $description="") { return $this->upload($file,$title,$description); }
   /**
    * Alias for `upload` method
    */
-  public function insert($file=null, $title=null, $description="") {
-    return $this->upload($file,$title,$description);
-  }
+  public function insert($file=null, $title=null, $description="") { return $this->upload($file,$title,$description); }
 
   /**
    * Alias for `delete` method
    */
-  public function remove($id=null, $reason="") {
-    return $this->delete($id,$reason);
-  }
+  public function remove($id=null, $reason="") { return $this->delete($id,$reason); }
 
 
   /**
    * Alias for `modify` method
    */
-  public function update($id=null, $title=null, $description="") {
-    return $this->modify($id,$title,$description);
-  }
+  public function update($id=null, $title=null, $description="") { return $this->modify($id,$title,$description);}
   /**
    * Alias for `modify` method
    */
-  public function edit($id=null, $title=null, $description="") {
-    return $this->modify($id,$title,$description);
-  }
+  public function edit($id=null, $title=null, $description="") { return $this->modify($id,$title,$description); }
 
   /**
    * Alias for `info` method
    */
-  public function information($id) {
-    return $this->info($id);
-  }
+  public function information($id) { return $this->info($id); }
   /**
    * Alias for `info` method
    */
-  public function item($id) {
-    return $this->info($id);
-  }
+  public function item($id) { return $this->info($id); }
 }
 ?>
