@@ -67,7 +67,7 @@ class blipPHP {
         'userlogin'		=> $this->username,
         'password'		=> $this->password,
         'title'			  => $title,
-        'hidden'		  => $hidden,
+        'hidden'		  => $hidden,   
         'description'	=> $description
     );
 
