@@ -1,6 +1,6 @@
 <?php
 /**
- *  * Blip.tv functions
+ *  * Blip-PHP Class
  * 			@version 0.4a
  *
  *
