@@ -220,6 +220,72 @@ class blipPHP {
 
     return $xml_response;
   }
+  /**
+   * Replace file
+   *
+   * @param int[required] 	    $id
+   * @param url[required] 	    $file
+   * @return Response stdClass if succes, or FALSE if there error.
+   */
+  public function replaceFile($id=null, $file=null, $title='new title') {
+    if(($id==null) or (empty($id)))
+      throw new Exception("MISSING_PARAMETER: No id given.");
+
+    if(($file==null) or (empty($file)))
+      throw new Exception("MISSING_PARAMETER: No file given.");
+
+    if(!file_exists($file))
+      throw new Exception("MISSING_PARAMETER: File dosen`t exists.");
+
+
+    //Blip.tv fields
+    $data = array(
+        'cmd'			=> "edit",
+        's'		        => "file",
+        'item_type'		=> "file",
+        'post'			=> "1",
+        'skin'			=> "api",
+        'userlogin'		=> $this->username,
+        'password'		=> $this->password,
+        'id'            => $id,
+        'title'         => $title
+    );
+
+
+    //Setting http class settings
+    $http=new http_class;
+    $http->timeout		  = 0;
+    $http->data_timeout	= 0;
+    $arguments			    = array();
+    $response			      = "";
+
+    $http->GetRequestArguments(self::gateway . '?' . http_build_query($data), $arguments);
+
+    $arguments["RequestMethod"]	= "POST";
+    $arguments["PostValues"]	= $data;
+    $arguments["User-Agent"]	= "blipPHP (http://code.google.com/p/blip-php/)";
+    $arguments["PostFiles"]		= array(
+        "file" => array(
+            "Data"			=> file_get_contents($file),
+            "Name"			=> basename($file),
+            "Content-Type"	=> "Application/Octet-stream"
+        )
+    );
+
+    //Make the request
+    $http->Open($arguments);
+    $http->SendRequest($arguments);
+    $http->ReadWholeReplyBody($response);
+
+    $xml_response = simplexml_load_string($response);
+
+    if(strtoupper($xml_response->status) == "ERROR")
+      if(strtoupper($xml_response->error->code) == "AUTHENTICATION_REQUIRED")
+      throw new Exception("AUTHENTICATION_REQUIRED: Bad login information.");
+
+
+    return $xml_response;
+  }
 
   /**
    * Delete file
