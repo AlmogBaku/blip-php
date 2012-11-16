@@ -227,7 +227,7 @@ class blipPHP {
    * @param url[required] 	    $file
    * @return Response stdClass if succes, or FALSE if there error.
    */
-  public function replaceFile($id=null, $file=null, $title='new title') {
+  public function replaceFile($id=null, $file=null) {
     if(($id==null) or (empty($id)))
       throw new Exception("MISSING_PARAMETER: No id given.");
 
@@ -247,8 +247,7 @@ class blipPHP {
         'skin'			=> "api",
         'userlogin'		=> $this->username,
         'password'		=> $this->password,
-        'id'            => $id,
-        'title'         => $title
+        'id'            => $id
     );
 
 
