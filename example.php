@@ -11,7 +11,16 @@ include_once("blipPHP.php");
 $blipPHP = new blipPHP("username", "password");
 
 /** Upload file **/
-$respond = $blipPHP->upload("videos/blip_test_footage.mp4", "title", "description");
+$respond = $blipPHP->upload("videos/blip_test_footage.mp4", "title", "description", "public");
+print_r($respond);
+
+/** Modify file **/
+$respond = $blipPHP->modify(1234, "title", "description", "public");
+print_r($respond);
+
+/** Change file privacy **/
+/** I believe this only works for pro accounts */
+$respond = $blipPHP->setPrivacy(1234, 'private');
 print_r($respond);
 
 /** Delete **/
