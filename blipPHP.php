@@ -18,7 +18,7 @@ include_once("http.class.php");	/** Include http.class | @license on the file 	*
 ### Class ####
 
 class blipPHP {
-  const 	gateway = "http://uploads.blip.tv/";
+  const 	gateway = "http://blip.tv/";
   public 	$username = "";
   public 	$password = "";
 
@@ -41,12 +41,13 @@ class blipPHP {
   /**
    * Upload file
    *
-   * @param url[required] 	$file
+   * @param url[required] 	    $file
    * @param string[required] 	$title
    * @param string[optional] 	$description
+   * @param bool[optional] 	    $hidden (false = public / true = private)
    * @return Response stdClass if succes, or FALSE if there error.
    */
-  public function upload($file=null, $title=null, $description="") {
+  public function upload($file=null, $title=null, $description="", $hidden=false) {
     if(($title==null) or (empty($title)))
       throw new Exception("MISSING_PARAMETER: No title given.");
 
@@ -59,15 +60,15 @@ class blipPHP {
 
     //Blip.tv fields
     $data = array(
-        'cmd'			    => "post",
-        'section'		  => "file",
+        'cmd'			=> "post",
+        'section'		=> "file",
         'item_type'		=> "file",
-        'post'			  => "1",
-        'skin'			  => "api",
+        'post'			=> "1",
+        'skin'			=> "api",
         'userlogin'		=> $this->username,
         'password'		=> $this->password,
-        'title'			  => $title,
-        'hidden'		  => $hidden,   
+        'hidden'        => ($hidden == false)?"0":"1",
+        'title'			=> $title,
         'description'	=> $description
     );
 
@@ -110,12 +111,13 @@ class blipPHP {
   /**
    * Modify file
    *
-   * @param int[required] 	$id
+   * @param int[required] 	    $id
    * @param string[required] 	$title
    * @param string[optional] 	$description
+   * @param bool[optional] 	    $hidden (false = public / true = private)
    * @return Response stdClass if succes, or FALSE if there error.
    */
-  public function modify($id=null, $title=null, $description="") {
+  public function modify($id=null, $title=null, $description="", $hidden=false) {
     if(($title==null) or (empty($title)))
       throw new Exception("MISSING_PARAMETER: No title given.");
 
@@ -124,15 +126,16 @@ class blipPHP {
 
     //Blip.tv fields
     $data = array(
-        'cmd'			    => "post",
-        'section'		  => "file",
+        'cmd'			=> "post",
+        'section'	    => "file",
         'item_type'		=> "file",
-        'post'			  => "1",
-        'skin'			  => "api",
+        'post'		    => "1",
+        'skin'		    => "api",
         'userlogin'		=> $this->username,
         'password'		=> $this->password,
-        'id'			    => $id,
-        'title'			  => $title,
+        'hidden'        => ($hidden == false)?"0":"1",
+        'id'	        => $id,
+        'title'	        => $title,
     );
     if(!empty($description)) $data['description'] = $description;
 
@@ -181,24 +184,22 @@ class blipPHP {
 
     //Blip.tv fields
     $data = array(
-        'cmd'			  => "delete",
-        'section'		=> "posts",
-        'item_type'	=> "file",
-        'post'			=> "1",
-        'skin'			=> "api",
-        'userlogin'	=> $this->username,
-        'password'	=> $this->password,
-        'item_id'		=> $id,
-        'reason'		=> $reason
+			'cmd'			=> "delete",
+            's'             => "file",
+			'skin'			=> "api",
+			'userlogin'		=> $this->username,
+			'password'		=> $this->password,
+			'id'		    => $id,
+			'reason'		=> $reason
     );
 
 
     //Setting http class settings
-    $http=new http_class;
-    $http->timeout		  = 0;
+    $http = new http_class;
+    $http->timeout = 0;
     $http->data_timeout	= 0;
-    $arguments			    = array();
-    $response			      = "";
+    $arguments = array();
+    $response = "";
 
     $http->GetRequestArguments(self::gateway . '?' . http_build_query($data),$arguments);
 
@@ -239,26 +240,26 @@ class blipPHP {
   /**
    * Alias for `upload` method
    */
-  public function add($file=null, $title=null, $description="") { return $this->upload($file,$title,$description); }
+  public function add($file=null, $title=null, $description="", $hidden=false) { return $this->upload($file, $title, $description, $hidden); }
   /**
    * Alias for `upload` method
    */
-  public function insert($file=null, $title=null, $description="") { return $this->upload($file,$title,$description); }
+  public function insert($file=null, $title=null, $description="", $hidden=false) { return $this->upload($file, $title, $description, $hidden); }
 
   /**
    * Alias for `delete` method
    */
-  public function remove($id=null, $reason="") { return $this->delete($id,$reason); }
+  public function remove($id=null, $reason="") { return $this->delete($id, $reason); }
 
 
   /**
    * Alias for `modify` method
    */
-  public function update($id=null, $title=null, $description="") { return $this->modify($id,$title,$description);}
+  public function update($id=null, $title=null, $description="", $hidden=false) { return $this->modify($id, $title, $description, $hidden);}
   /**
    * Alias for `modify` method
    */
-  public function edit($id=null, $title=null, $description="") { return $this->modify($id,$title,$description); }
+  public function edit($id=null, $title=null, $description="", $hidden=false) { return $this->modify($id, $title, $description, $hidden); }
 
   /**
    * Alias for `info` method
