@@ -1,7 +1,7 @@
 <?php
 /**
  *  * Blip-PHP Class
- * 			@version 0.4a
+ * 			@version 0.4c
  *
  *
  *
