@@ -18,6 +18,10 @@ print_r($respond);
 $respond = $blipPHP->modify(1234, "title", "description", "public");
 print_r($respond);
 
+/** replace file **/
+$respond = $blipPHP->replaceFile(6424561, "videos/blip_test_footage.mp4");
+print_r($respond);
+
 /** Change file privacy **/
 /** I believe this only works for pro accounts */
 $respond = $blipPHP->setPrivacy(1234, 'private');
